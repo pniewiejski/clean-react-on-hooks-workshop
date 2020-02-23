@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
+import { getByDisplayValue } from '@testing-library/react';
 
 // 👉 Todo: implement the useUndoableState hook.
 // You need to debounce the the change handler, this is how you debounce:
@@ -9,24 +10,46 @@ import React from 'react'
 // clearTimeout(handler) // <- cleanup
 
 function useUndoableState(initialValue, delay = 500) {
+  const [body, setBody] = useState('')
+  const [history, setHistory] = useState([]);
+  
+  const undo = () => {
+    setBody(history[1] || '')
+    setHistory(history.slice(1))
+  }
 
-  React.useEffect(() => {
+  const reset = useCallback(() => {
+    setBody(initialValue)
+    setHistory([])
+  }, [initialValue])
 
-  }, [])
+  const shouldUpdateHistory = history[0] !== body
+  useEffect(() => {
+    if(!body.length || !shouldUpdateHistory) {
+      return
+    }
+    
+    const handler = setTimeout(() => {
+      setHistory([body, ...history])
+    }, delay)
 
+    return () => {
+      clearTimeout(handler)
+    }
+  })
   // 👉 Uncomment when ready:
   // return [value, setValue, undo]
 
   // 👉 (optional) Add reset function
   // 👉 should be created only once and refreshed only when initial value changes
   // Uncomment when ready:
-  // return [value, setValue, undo, reset]
+  return [body, setBody, undo, reset]
 }
 
 export default function Editor() {
-  const [body, setBody] = React.useState('')
+  // const [body, setBody] = React.useState('')
   // 👉 Replace the above with:
-  // const [body, setBody, undo] = React.useUndoableState('')
+  const [body, setBody, undo, reset] = useUndoableState('')
 
   const changeBody = event => setBody(event.target.value)
   const submitForm = () => alert(JSON.stringify({ body }))
@@ -49,22 +72,22 @@ export default function Editor() {
               </fieldset>
 
               {/* 👉 Uncomment when ready: */}
-              {/* <button
+              <button
                 className="btn btn-lg btn-secondary mr-2"
                 type="button"
                 onClick={undo}
               >
                 Undo
-              </button> */}
+              </button>
 
               {/* 👉 (optional) Uncomment when ready: */}
-              {/* <button
+              {<button
                 className="btn btn-lg btn-secondary mr-2"
                 type="button"
                 onClick={reset}
               >
                 Reset
-              </button> */}
+              </button>}
 
               <button
                 className="btn btn-lg btn-primary"

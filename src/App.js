@@ -5,7 +5,7 @@ import Description from './03/04.avoid-out-of-order-updates'
 
 import WindowSize from './04/01.WindowSize/WindowSize';
 // import FinalWindowSize from './04/01.WindowSize/final/WindowSize';
-// import Editor from './04/02.Editor/Editor';
+import Editor from './04/02.Editor/Editor';
 // import FinalEditor from './04/02.Editor/final/Editor';
 
 import './App.css';
@@ -53,6 +53,10 @@ function App() {
       <div>
         <h3>WindowSize:</h3>
         {<WindowSize/>}
+      </div>
+      <div>
+        <h3>Editor:</h3>
+        {<Editor/>}
       </div>
     </div>
   );
