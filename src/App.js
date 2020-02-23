@@ -50,6 +50,10 @@ function App() {
         </p>
         <Description />
       </section>}
+      <div>
+        <h3>WindowSize:</h3>
+        {<WindowSize/>}
+      </div>
     </div>
   );
 }

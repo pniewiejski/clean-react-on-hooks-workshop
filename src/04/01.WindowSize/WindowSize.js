@@ -1,31 +1,28 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 const getSize = () => ({
   width: window.innerWidth,
   height: window.innerHeight,
 })
 
-export default class WindowSize extends React.Component {
-  state = getSize();
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState(getSize())
+  const handleResize = useCallback(() => setWindowSize(getSize()), [setWindowSize])
 
-  handleResize = () => {
-    this.setState(getSize())
-  }
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    return () => { window.removeEventListener('resize', handleResize) }
+  }, [handleResize])
 
-  componentDidMount() {
-    window.addEventListener('resize', this.handleResize)
-  }
+  return windowSize
+}
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
-  }
+export default function WindowSize() {
+  const windowSize = useWindowSize()
 
-  render() {
-    const windowSize = this.state
-    return (
-      <div>
-        {windowSize.width} x {windowSize.height}
-      </div>
-    )
-  }
+  return (
+    <div>
+      {windowSize.width} x {windowSize.height}
+    </div>
+  )
 }
