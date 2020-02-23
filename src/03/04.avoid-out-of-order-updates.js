@@ -23,17 +23,24 @@ function Description ({itemId}) {
   const [description, setDescription] = useState()
 
   useEffect(() => {
+    let ignoreRequest = false
     setLoading(true)
 
     const get = async () => {
       // asynchronous operation that takes time
       const data = await getAfter({delay: artificialDelays[itemId], returnValue: descriptions[itemId]})
 
-      setDescription(data)
-      setLoading(false)
+      if (!ignoreRequest) {
+        setDescription(data)
+        setLoading(false)
+      }
     }
 
     get()
+
+    return () => {
+      ignoreRequest = true
+    }
   }, [itemId])
 
   if (loading) {

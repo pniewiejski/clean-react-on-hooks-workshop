@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import Timer from './03/03.dependencies-mutable-state'
-// import Description from './03/04.avoid-out-of-order-updates'
+import Description from './03/04.avoid-out-of-order-updates'
 
 import WindowSize from './04/01.WindowSize/WindowSize';
 // import FinalWindowSize from './04/01.WindowSize/final/WindowSize';
@@ -36,7 +36,7 @@ function App() {
       </section>
 
       {/* TODO Uncomment later */}
-      {/* <section>
+      {<section>
         <h2>Avoid out of order updates</h2>
         <p>
           Imagine you are getting data from backend (asynchronously) whenever some prop changes.<br/>
@@ -49,7 +49,7 @@ function App() {
           Change the useEffect hook implementation to ignore state update of earlier response if a new request was made.
         </p>
         <Description />
-      </section> */}
+      </section>}
     </div>
   );
 }

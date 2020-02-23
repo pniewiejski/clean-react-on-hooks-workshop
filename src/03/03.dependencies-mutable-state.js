@@ -12,22 +12,26 @@ import React, {useRef, useEffect, useState} from 'react'
 export default function () {
   const [seconds, setSeconds] = useState(0)
 
+  const intervalRef = useRef(null)
+
   useEffect(() => {
     console.log('interval effect')
     const id = setInterval(() => {
       console.log('running interval', id)
-      setSeconds(seconds + 1)
+      setSeconds(sec => sec + 1)
     }, 1000);
+    intervalRef.current = id
 
     return () => {
       console.log('cleaning interval', id)
       clearInterval(id);
     };
-  }, [seconds]);
+  }, []);
 
   return (
     <>
       <p>{seconds}s</p>
+      <button onClick={() => { clearInterval(intervalRef.current) }}>Stop timer</button>
     </>
   )
 }
